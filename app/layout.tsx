@@ -1,19 +1,20 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Gbajo - Co-operative Manager',
-  description: 'Manage members, contributions, and elections seamlessly',
-}
+  title: "GBAJO - Cooperative Management Platform",
+  description:
+    "Manage your cooperative with ease - Plans, Members, Contributions",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="antialiased bg-slate-50">{children}</body>
     </html>
-  )
+  );
 }

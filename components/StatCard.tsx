@@ -1,39 +1,78 @@
-'use client'
+"use client";
 
-import { TrendingUp, ArrowUpRight } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ReactNode } from "react";
+import { ArrowUpRight } from "lucide-react";
 
 interface StatCardProps {
-  label: string
-  value: string | number
-  trend?: string
-  highlight?: boolean
-  icon?: ReactNode
+  label: string;
+  value: string | number;
+  trend?: string;
+  subtitle?: string;
+  icon?: ReactNode;
+  color?: "blue" | "green" | "purple" | "orange" | "red";
 }
 
-export default function StatCard({ label, value, trend, highlight = false, icon }: StatCardProps) {
-  return (
-    <div className={`${highlight ? 'stat-card-highlight' : 'stat-card'} relative overflow-hidden card-hover`}>
-      {/* Dashed decoration */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/3 dashed-decoration opacity-30"></div>
+export default function StatCard({
+  label,
+  value,
+  trend,
+  subtitle,
+  icon,
+  color = "blue",
+}: StatCardProps) {
+  const brandColor = "#0F3E76";
 
-      <div className="flex items-start justify-between mb-4 relative z-10">
-        <p className={`text-sm font-semibold ${highlight ? 'text-brand-100' : 'text-gray-600'}`}>{label}</p>
-        <button className={`w-7 h-7 rounded-full flex items-center justify-center ${highlight ? 'bg-brand-500' : 'bg-gray-100'}`}>
-          <ArrowUpRight size={14} className={highlight ? 'text-white' : 'text-gray-600'} />
-        </button>
+  // Check if the trend indicates growth to style it appropriately
+  const isPositiveTrend = trend?.includes("↑") || trend?.includes("+");
+
+  return (
+    <div className="group bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-500 relative overflow-hidden">
+      {/* Background Decorative Icon - Very Subtle */}
+      <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:scale-110 group-hover:opacity-[0.05] transition-all duration-700 pointer-events-none">
+        {icon}
       </div>
 
-      <h3 className={`text-3xl font-bold mb-3 relative z-10 ${highlight ? 'text-white' : 'text-gray-900'}`}>
-        {value}
-      </h3>
+      <div className="flex flex-col h-full justify-between relative z-10">
+        <div className="flex items-start justify-between mb-8">
+          {/* Label: Editorial High-Contrast Style */}
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] leading-none">
+            {label}
+          </p>
 
-      {trend && (
-        <div className={`flex items-center gap-1 text-xs relative z-10 ${highlight ? 'text-brand-100' : 'text-gray-500'}`}>
-          <TrendingUp size={12} />
-          <span>{trend}</span>
+          {/* Icon: Squircle Container */}
+          <div
+            className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 group-hover:bg-[#0F3E76] group-hover:text-white transition-all duration-300"
+            style={{ color: color === "blue" ? brandColor : "inherit" }}
+          >
+            {icon}
+          </div>
         </div>
-      )}
+
+        <div>
+          {/* Main Value: Bold & Tight */}
+          <h3 className="text-3xl font-black text-slate-900 tracking-tighter mb-2 group-hover:text-[#0F3E76] transition-colors">
+            {value}
+          </h3>
+
+          {/* Contextual Subtext */}
+          <div className="flex items-center gap-1.5 min-h-[1rem]">
+            {trend ? (
+              <p
+                className={`text-[10px] font-black uppercase tracking-tight flex items-center gap-0.5 ${
+                  isPositiveTrend ? "text-green-600" : "text-slate-400"
+                }`}
+              >
+                {isPositiveTrend && <ArrowUpRight size={12} />}
+                {trend}
+              </p>
+            ) : (
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-tight">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
