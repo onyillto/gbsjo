@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("/api/auth/tenants/login", {
+      const response = await apiFetch("/api/auth/tenants/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -168,7 +169,7 @@ export default function LoginPage() {
           </button>
 
           {/* Sign Up Link */}
-          <div className="text-center mt-6 text-sm text-gray-600 font-['Inter']">
+          {/* <div className="text-center mt-6 text-sm text-gray-600 font-['Inter']">
             Don't have an account?{" "}
             <a
               href="/auth/signup"
@@ -176,7 +177,7 @@ export default function LoginPage() {
             >
               Sign up
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

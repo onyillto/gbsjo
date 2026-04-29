@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Image from "next/image";
 import { Lock } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
-export default function VerifyTokenPage() {
+function VerifyTokenContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -28,7 +29,7 @@ export default function VerifyTokenPage() {
           ? "/api/auth/verify-signup-token"
           : "/api/auth/verify-reset-token";
 
-      const response = await fetch(endpoint, {
+      const response = await apiFetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, token }),
@@ -65,7 +66,7 @@ export default function VerifyTokenPage() {
           ? "/api/auth/tenants/signup"
           : "/api/auth/forgot-password";
 
-      const response = await fetch(endpoint, {
+      const response = await apiFetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -278,5 +279,13 @@ export default function VerifyTokenPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyTokenPage() {
+  return (
+    <Suspense>
+      <VerifyTokenContent />
+    </Suspense>
   );
 }

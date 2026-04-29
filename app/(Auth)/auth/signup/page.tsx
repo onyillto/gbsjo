@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Mail } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function SignupPage() {
     setError("");
 
     try {
-      const response = await fetch("/api/auth/tenants/signup", {
+      const response = await apiFetch("/api/auth/tenants/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

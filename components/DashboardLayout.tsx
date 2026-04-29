@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children, pageTitle: _pageTitle }: { children: ReactNode; pageTitle?: string }) {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />

@@ -57,7 +57,7 @@ export default function ElectionsPage() {
       } />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
-        <StatCard label="Total Elections" value={elections.length} trend="All elections" highlight />
+        <StatCard label="Total Elections" value={elections.length} trend="All elections" />
         <StatCard label="Active" value={elections.filter(e => e.status === 'active').length} trend="Currently voting" />
         <StatCard label="Upcoming" value={elections.filter(e => e.status === 'upcoming').length} trend="Scheduled" />
         <StatCard label="Completed" value={elections.filter(e => e.status === 'completed').length} trend="Finished" />

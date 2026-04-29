@@ -10,6 +10,7 @@ interface StatCardProps {
   subtitle?: string;
   icon?: ReactNode;
   color?: "blue" | "green" | "purple" | "orange" | "red";
+  highlight?: boolean;
 }
 
 export default function StatCard({
@@ -19,6 +20,7 @@ export default function StatCard({
   subtitle,
   icon,
   color = "blue",
+  highlight = false,
 }: StatCardProps) {
   const brandColor = "#0F3E76";
 
@@ -26,7 +28,7 @@ export default function StatCard({
   const isPositiveTrend = trend?.includes("↑") || trend?.includes("+");
 
   return (
-    <div className="group bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-500 relative overflow-hidden">
+    <div className={`group bg-white rounded-[2rem] p-6 border shadow-sm hover:shadow-xl transition-all duration-500 relative overflow-hidden ${highlight ? "border-[#0F3E76] shadow-blue-100" : "border-slate-100 hover:border-slate-200"}`}>
       {/* Background Decorative Icon - Very Subtle */}
       <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:scale-110 group-hover:opacity-[0.05] transition-all duration-700 pointer-events-none">
         {icon}

@@ -1,60 +1,35 @@
 {
   "pages": {
-    "/(Auth)/auth/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Auth)/auth/login/page.js"
-    ],
-    "/(Auth)/auth/signup/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Auth)/auth/signup/page.js"
-    ],
-    "/(Auth)/auth/forgot-password/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Auth)/auth/forgot-password/page.js"
-    ],
-    "/(Auth)/auth/verify-token/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Auth)/auth/verify-token/page.js"
-    ],
-    "/(Dashboard)/dashboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Dashboard)/dashboard/page.js"
-    ],
-    "/(Auth)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Auth)/layout.js"
-    ],
-    "/(Dashboard)/dashboard/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Dashboard)/dashboard/layout.js"
-    ],
-    "/(Dashboard)/dashboard/tenants/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(Dashboard)/dashboard/tenants/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/(Dashboard)/dashboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(Dashboard)/dashboard/page.js"
+    ],
+    "/(Dashboard)/dashboard/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(Dashboard)/dashboard/layout.js"
+    ],
     "/(Dashboard)/dashboard/plans/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(Dashboard)/dashboard/plans/page.js"
     ],
-    "/_not-found/page": [
+    "/(Auth)/auth/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/(Auth)/auth/login/page.js"
+    ],
+    "/(Auth)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(Auth)/layout.js"
     ]
   }
 }

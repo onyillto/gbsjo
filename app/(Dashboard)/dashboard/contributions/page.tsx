@@ -67,7 +67,7 @@ export default function ContributionsPage() {
       } />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
-        <StatCard label="Total Amount" value={`₦${(total / 1000000).toFixed(2)}M`} trend="All contributions" highlight />
+        <StatCard label="Total Amount" value={`₦${(total / 1000000).toFixed(2)}M`} trend="All contributions" />
         <StatCard label="Completed" value={contributions.filter(c => c.status === 'completed').length} trend="Paid in full" />
         <StatCard label="Pending" value={contributions.filter(c => c.status === 'pending').length} trend="Awaiting payment" />
         <StatCard label="Average" value={`₦${contributions.length ? (total / contributions.length / 1000).toFixed(0) : 0}K`} trend="Per contribution" />

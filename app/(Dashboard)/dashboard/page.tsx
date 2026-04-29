@@ -27,7 +27,7 @@ const DUMMY_PLANS = [
     target: 1000000,
     collected: 650000,
     members: 45,
-    status: "active",
+    status: "active" as const,
     progress: 65,
   },
   {
@@ -36,7 +36,7 @@ const DUMMY_PLANS = [
     target: 2000000,
     collected: 1200000,
     members: 60,
-    status: "active",
+    status: "active" as const,
     progress: 60,
   },
   {
@@ -45,7 +45,7 @@ const DUMMY_PLANS = [
     target: 500000,
     collected: 250000,
     members: 30,
-    status: "active",
+    status: "active" as const,
     progress: 50,
   },
 ];
@@ -83,22 +83,22 @@ const DUMMY_MEMBERS = [
   {
     id: "member_1",
     name: "Chioma Adeleke",
-    role: "Admin",
-    status: "active",
+    role: "Admin" as const,
+    status: "active" as const,
     avatar: "CA",
   },
   {
     id: "member_2",
     name: "John David",
-    role: "Member",
-    status: "active",
+    role: "Member" as const,
+    status: "active" as const,
     avatar: "JD",
   },
   {
     id: "member_3",
     name: "Jane Smith",
-    role: "Manager",
-    status: "active",
+    role: "Manager" as const,
+    status: "active" as const,
     avatar: "JS",
   },
 ];
