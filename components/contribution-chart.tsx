@@ -9,46 +9,45 @@ interface ChartDataPoint {
 
 interface ContributionChartProps {
   data: ChartDataPoint[];
+  title?: string;
+  stat?: string;
+  statBadge?: string;
+  formatValue?: (v: number) => string;
+  viewAllHref?: string;
 }
 
-export default function ContributionChart({ data }: ContributionChartProps) {
+export default function ContributionChart({
+  data,
+  title = "Vault Targets",
+  stat,
+  statBadge,
+  formatValue,
+  viewAllHref = "/dashboard/plans",
+}: ContributionChartProps) {
   const brandColor = "#0F3E76";
-  const maxValue = Math.max(...data.map((d) => d.value));
+  const maxValue = Math.max(...data.map((d) => d.value), 1);
+  const displayStat = stat ?? (data.length > 0 ? String(data.length) : "—");
+  const displayBadge = statBadge ?? `${data.length} vault${data.length !== 1 ? "s" : ""}`;
+  const tooltipLabel = (v: number) => (formatValue ? formatValue(v) : String(v));
 
   return (
     <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm hover:shadow-md transition-all h-[420px] flex flex-col overflow-hidden">
-      {/* Header Section */}
       <div className="flex items-end justify-between mb-10 flex-shrink-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <TrendingUp size={16} className="text-slate-400" />
             <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-              Liquidity Trajectory
+              {title}
             </h2>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-black text-slate-900 tracking-tighter">
-              78.4%
+              {displayStat}
             </span>
             <span className="text-[10px] font-black text-green-600 flex items-center bg-green-50 px-2 py-0.5 rounded-md">
-              <ArrowUpRight size={10} /> +12%
+              <ArrowUpRight size={10} /> {displayBadge}
             </span>
           </div>
-        </div>
-
-        <div className="flex gap-1 bg-slate-50 p-1 rounded-xl border border-slate-100">
-          {["7D", "30D", "1Y"].map((period) => (
-            <button
-              key={period}
-              className={`px-3 py-1 text-[10px] font-black rounded-lg transition-all ${
-                period === "7D"
-                  ? "bg-white text-[#0F3E76] shadow-sm"
-                  : "text-slate-400 hover:text-slate-600"
-              }`}
-            >
-              {period}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -74,7 +73,7 @@ export default function ContributionChart({ data }: ContributionChartProps) {
                 {/* Minimalist Hover Tooltip */}
                 <div className="absolute -top-8 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                   <span className="text-[10px] font-black text-white bg-slate-900 px-2 py-1 rounded-md">
-                    {point.value}%
+                    {tooltipLabel(point.value)}
                   </span>
                 </div>
 
@@ -114,9 +113,9 @@ export default function ContributionChart({ data }: ContributionChartProps) {
             </span>
           </div>
         </div>
-        <button className="text-[10px] font-black text-[#0F3E76] uppercase tracking-widest hover:underline">
-          Audit Full Report
-        </button>
+        <a href={viewAllHref} className="text-[10px] font-black text-[#0F3E76] uppercase tracking-widest hover:underline">
+          View All Vaults
+        </a>
       </div>
     </div>
   );

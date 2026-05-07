@@ -1,113 +1,281 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import DashboardLayout from '@/components/DashboardLayout'
-import PageHeader from '@/components/PageHeader'
-import StatCard from '@/components/StatCard'
-import Table from '@/components/Table'
-import Modal from '@/components/Modal'
-import { useGbajoStore, Contribution } from '@/store/gbajoStore'
-import { Plus, Trash2 } from 'lucide-react'
+import { useState, useEffect, useCallback } from "react";
+import DashboardLayout from "@/components/DashboardLayout";
+import StatCard from "@/components/StatCard";
+import { apiFetch } from "@/lib/api";
+import {
+  Search, Loader2, TrendingUp, CheckCircle2, Clock, AlertCircle, Filter,
+} from "lucide-react";
+
+interface Contribution {
+  id: number;
+  plan_id: number;
+  member_id?: number;
+  user_id?: number;
+  amount: string | number;
+  status: string;
+  reference?: string;
+  inserted_at: string;
+  [key: string]: unknown;
+}
+
+interface Member {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+interface Plan {
+  id: number;
+  name: string;
+}
+
+const BRAND = "#0F3E76";
+
+function formatCurrency(amount: string | number) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  }).format(Number(amount));
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const s = status?.toLowerCase();
+  if (s === "completed" || s === "success")
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-[9px] font-bold uppercase">
+        <CheckCircle2 size={10} /> {status}
+      </span>
+    );
+  if (s === "pending")
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[9px] font-bold uppercase">
+        <Clock size={10} /> {status}
+      </span>
+    );
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[9px] font-bold uppercase">
+      <AlertCircle size={10} /> {status}
+    </span>
+  );
+}
 
 export default function ContributionsPage() {
-  const { contributions, addContribution, deleteContribution, users } = useGbajoStore()
-  const [isOpen, setIsOpen] = useState(false)
-  const [formData, setFormData] = useState<Partial<Contribution>>({})
+  const [contributions, setContributions] = useState<Contribution[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
-  const handleOpen = () => {
-    setFormData({ memberId: '', amount: 0, month: '', status: 'pending' })
-    setIsOpen(true)
-  }
+  const fetchAll = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [contribRes, memberRes, planRes] = await Promise.all([
+        apiFetch("/api/tenant/contributions"),
+        apiFetch("/api/tenant/members"),
+        apiFetch("/api/tenant/plans"),
+      ]);
+      const [contribJson, memberJson, planJson] = await Promise.all([
+        contribRes.json(),
+        memberRes.json(),
+        planRes.json(),
+      ]);
+      if (contribRes.ok && contribJson.status) setContributions(contribJson.data ?? []);
+      else setError("Failed to load contributions.");
+      if (memberRes.ok && memberJson.status) setMembers(memberJson.data ?? []);
+      if (planRes.ok && planJson.status) setPlans(planJson.data ?? []);
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const selected = users.find(u => u.id === formData.memberId)
-    addContribution({
-      id: Date.now().toString(),
-      memberId: formData.memberId || '',
-      memberName: selected?.name || '',
-      amount: formData.amount || 0,
-      date: new Date().toISOString().split('T')[0],
-      month: formData.month || '',
-      status: (formData.status as any) || 'pending',
-      reference: `TXN${Date.now().toString().slice(-6)}`
-    })
-    setIsOpen(false)
-  }
+  useEffect(() => {
+    fetchAll();
+  }, [fetchAll]);
 
-  const columns = [
-    {
-      key: 'memberName', label: 'Member', render: (v: string) => (
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
-            {v.split(' ').map(n => n[0]).join('')}
-          </div>
-          <span className="font-semibold text-gray-900">{v}</span>
-        </div>
-      )
-    },
-    { key: 'amount', label: 'Amount', render: (v: number) => <span className="font-semibold">₦{v.toLocaleString()}</span> },
-    { key: 'month', label: 'Month' },
-    { key: 'date', label: 'Date' },
-    { key: 'status', label: 'Status', render: (v: string) => <span className={v === 'completed' ? 'badge-success' : 'badge-warning'}>{v}</span> },
-    { key: 'reference', label: 'Reference', render: (v: string) => <span className="text-xs font-mono text-gray-500">{v}</span> },
-    {
-      key: 'id', label: '', render: (val: string) => (
-        <button onClick={() => deleteContribution(val)} className="w-8 h-8 bg-gray-50 hover:bg-red-50 rounded-lg flex items-center justify-center"><Trash2 size={14} className="text-red-500" /></button>
-      )
-    },
-  ]
+  const getMemberName = (c: Contribution) => {
+    const mid = c.member_id ?? c.user_id;
+    const m = members.find((x) => x.id === mid);
+    return m ? `${m.first_name} ${m.last_name}` : `Member #${mid ?? "—"}`;
+  };
 
-  const total = contributions.reduce((s, c) => s + c.amount, 0)
+  const getPlanName = (c: Contribution) => {
+    const p = plans.find((x) => x.id === c.plan_id);
+    return p?.name ?? `Plan #${c.plan_id ?? "—"}`;
+  };
+
+  const filtered = contributions.filter((c) => {
+    const name = getMemberName(c).toLowerCase();
+    const plan = getPlanName(c).toLowerCase();
+    const ref = String(c.reference ?? "").toLowerCase();
+    const matchesSearch =
+      name.includes(search.toLowerCase()) ||
+      plan.includes(search.toLowerCase()) ||
+      ref.includes(search.toLowerCase());
+    const matchesStatus =
+      filterStatus === "all" || c.status?.toLowerCase() === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  const total = contributions.reduce((s, c) => s + Number(c.amount), 0);
+  const completed = contributions.filter(
+    (c) => c.status?.toLowerCase() === "completed" || c.status?.toLowerCase() === "success"
+  ).length;
+  const pending = contributions.filter(
+    (c) => c.status?.toLowerCase() === "pending"
+  ).length;
 
   return (
-    <DashboardLayout>
-      <PageHeader title="Contributions" subtitle="Track and manage member contributions" action={
-        <button onClick={handleOpen} className="btn-primary"><Plus size={16} />Record Contribution</button>
-      } />
+    <DashboardLayout pageTitle="Contributions">
+      <div className="max-w-[1300px] mx-auto px-6 py-10 min-h-screen">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900">Contributions</h1>
+          <p className="text-slate-400 font-medium text-sm mt-1">
+            {contributions.length} contribution{contributions.length !== 1 ? "s" : ""} recorded
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
-        <StatCard label="Total Amount" value={`₦${(total / 1000000).toFixed(2)}M`} trend="All contributions" />
-        <StatCard label="Completed" value={contributions.filter(c => c.status === 'completed').length} trend="Paid in full" />
-        <StatCard label="Pending" value={contributions.filter(c => c.status === 'pending').length} trend="Awaiting payment" />
-        <StatCard label="Average" value={`₦${contributions.length ? (total / contributions.length / 1000).toFixed(0) : 0}K`} trend="Per contribution" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <StatCard
+            label="Total Value"
+            value={formatCurrency(total)}
+            trend="All contributions"
+            icon={<TrendingUp size={20} />}
+            highlight
+          />
+          <StatCard
+            label="Total Count"
+            value={contributions.length}
+            trend="Recorded entries"
+            icon={<Filter size={20} />}
+          />
+          <StatCard
+            label="Completed"
+            value={completed}
+            trend="Paid in full"
+            icon={<CheckCircle2 size={20} />}
+          />
+          <StatCard
+            label="Pending"
+            value={pending}
+            trend="Awaiting payment"
+            icon={<Clock size={20} />}
+          />
+        </div>
+
+        <div className="flex gap-3 mb-6">
+          <div className="flex-1 relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search by member, plan or reference..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium text-slate-900 shadow-sm focus:border-blue-500 outline-none placeholder:text-slate-400"
+            />
+          </div>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="px-4 py-2.5 bg-white border border-slate-200 rounded-xl font-bold text-xs text-slate-700 outline-none shadow-sm cursor-pointer hover:bg-slate-50"
+          >
+            <option value="all">All Status</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <Loader2 size={32} className="animate-spin text-slate-300" />
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center h-64 gap-3">
+              <p className="text-slate-500 text-sm">{error}</p>
+              <button onClick={fetchAll} className="text-xs font-bold text-[#0F3E76] underline">
+                Retry
+              </button>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 gap-2">
+              <TrendingUp size={32} className="text-slate-200" />
+              <p className="text-slate-400 text-sm">No contributions found.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-50">
+                    {["Member", "Plan", "Amount", "Status", "Reference", "Date"].map((h) => (
+                      <th
+                        key={h}
+                        className="text-left px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest"
+                      >
+                        {h}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((c, i) => (
+                    <tr
+                      key={c.id}
+                      className={`border-b border-slate-50 hover:bg-slate-50/50 transition-colors ${
+                        i === filtered.length - 1 ? "border-b-0" : ""
+                      }`}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-xs flex-shrink-0"
+                            style={{ backgroundColor: BRAND }}
+                          >
+                            {getMemberName(c)
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                              .slice(0, 2)}
+                          </div>
+                          <p className="font-bold text-slate-900 text-sm">{getMemberName(c)}</p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-slate-600 font-medium">
+                        {getPlanName(c)}
+                      </td>
+                      <td className="px-6 py-4 text-sm font-bold text-slate-900">
+                        {formatCurrency(c.amount)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <StatusBadge status={c.status} />
+                      </td>
+                      <td className="px-6 py-4 text-xs font-mono text-slate-400">
+                        {c.reference ?? "—"}
+                      </td>
+                      <td className="px-6 py-4 text-xs text-slate-500">
+                        {c.inserted_at
+                          ? new Date(c.inserted_at).toLocaleDateString("en-NG", {
+                              dateStyle: "medium",
+                            })
+                          : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
-
-      <div className="card">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Contributions</h2>
-        <Table columns={columns} data={contributions} />
-      </div>
-
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Record Contribution">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Member</label>
-            <select value={formData.memberId || ''} onChange={(e) => setFormData({ ...formData, memberId: e.target.value })} className="input-base" required>
-              <option value="">Select member</option>
-              {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Amount (₦)</label>
-            <input type="number" value={formData.amount || 0} onChange={(e) => setFormData({ ...formData, amount: +e.target.value })} className="input-base" required />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Month</label>
-            <input type="text" value={formData.month || ''} onChange={(e) => setFormData({ ...formData, month: e.target.value })} className="input-base" placeholder="e.g., April" required />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Status</label>
-            <select value={formData.status || 'pending'} onChange={(e) => setFormData({ ...formData, status: e.target.value as any })} className="input-base">
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-            </select>
-          </div>
-          <div className="flex gap-3 pt-2">
-            <button type="submit" className="btn-primary flex-1 justify-center">Record</button>
-            <button type="button" onClick={() => setIsOpen(false)} className="btn-secondary flex-1 justify-center">Cancel</button>
-          </div>
-        </form>
-      </Modal>
     </DashboardLayout>
-  )
+  );
 }

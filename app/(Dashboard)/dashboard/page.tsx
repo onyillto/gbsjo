@@ -32,15 +32,6 @@ interface Member {
   last_login_at: string | null;
 }
 
-const CHART_DATA = [
-  { day: "Mon", value: 35 },
-  { day: "Tue", value: 85 },
-  { day: "Wed", value: 55 },
-  { day: "Thu", value: 90 },
-  { day: "Fri", value: 45 },
-  { day: "Sat", value: 65 },
-  { day: "Sun", value: 40 },
-];
 
 function formatCurrency(amount: string | number) {
   return new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", minimumFractionDigits: 0 }).format(Number(amount));
@@ -148,7 +139,16 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-8 space-y-6">
             <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm h-[400px] overflow-hidden">
-              <ContributionChart data={CHART_DATA} />
+              <ContributionChart
+                data={plans.map((p) => ({
+                  day: p.name.split(" ").slice(0, 2).join(" "),
+                  value: Number(p.target_amount),
+                }))}
+                title="Vault Targets"
+                stat={formatCurrency(plans.reduce((s, p) => s + Number(p.target_amount), 0))}
+                statBadge={`${activePlans.length} active`}
+                formatValue={formatCurrency}
+              />
             </div>
 
             <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
@@ -201,10 +201,10 @@ export default function Dashboard() {
           </div>
 
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-200/50">
+            {/* <div className="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-200/50">
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Operations</h3>
               <QuickActions />
-            </div>
+            </div> */}
 
             <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
               <div className="flex items-center justify-between mb-6">
