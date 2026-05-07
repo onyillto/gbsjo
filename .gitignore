@@ -34,3 +34,6 @@ Thumbs.db
 # Temporary files
 .cache/
 .temp/
+
+.next/
+.nuxt/

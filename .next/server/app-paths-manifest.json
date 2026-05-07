@@ -1,5 +1,21 @@
 {
+  "/(Auth)/auth/forgot-password/page": "app/(Auth)/auth/forgot-password/page.js",
   "/(Auth)/auth/login/page": "app/(Auth)/auth/login/page.js",
+  "/(Auth)/auth/signup/page": "app/(Auth)/auth/signup/page.js",
+  "/(Auth)/auth/verify-token/page": "app/(Auth)/auth/verify-token/page.js",
+  "/(Dashboard)/dashboard/contributions/page": "app/(Dashboard)/dashboard/contributions/page.js",
+  "/(Dashboard)/dashboard/elections/help/page": "app/(Dashboard)/dashboard/elections/help/page.js",
+  "/(Dashboard)/dashboard/elections/page": "app/(Dashboard)/dashboard/elections/page.js",
   "/(Dashboard)/dashboard/page": "app/(Dashboard)/dashboard/page.js",
-  "/(Dashboard)/dashboard/plans/page": "app/(Dashboard)/dashboard/plans/page.js"
+  "/(Dashboard)/dashboard/payments/page": "app/(Dashboard)/dashboard/payments/page.js",
+  "/(Dashboard)/dashboard/plans/page": "app/(Dashboard)/dashboard/plans/page.js",
+  "/(Dashboard)/dashboard/settings/page": "app/(Dashboard)/dashboard/settings/page.js",
+  "/(Dashboard)/dashboard/subscriptions/page": "app/(Dashboard)/dashboard/subscriptions/page.js",
+  "/(Dashboard)/dashboard/tenants/page": "app/(Dashboard)/dashboard/tenants/page.js",
+  "/(Dashboard)/dashboard/users/page": "app/(Dashboard)/dashboard/users/page.js",
+  "/(Dashboard)/dashboard/votes/page": "app/(Dashboard)/dashboard/votes/page.js",
+  "/(Dashboard)/dashboard/wallets/page": "app/(Dashboard)/dashboard/wallets/page.js",
+  "/(Dashboard)/dashboard/withdrawals/page": "app/(Dashboard)/dashboard/withdrawals/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }

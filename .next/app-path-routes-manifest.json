@@ -1,1 +1,21 @@
-{"/_not-found/page":"/_not-found","/(Auth)/auth/forgot-password/page":"/auth/forgot-password","/(Auth)/auth/signup/page":"/auth/signup","/(Auth)/auth/verify-token/page":"/auth/verify-token","/(Auth)/auth/login/page":"/auth/login","/(Dashboard)/dashboard/elections/help/page":"/dashboard/elections/help","/(Dashboard)/dashboard/payments/page":"/dashboard/payments","/(Dashboard)/dashboard/page":"/dashboard","/(Dashboard)/dashboard/tenants/page":"/dashboard/tenants","/(Dashboard)/dashboard/users/page":"/dashboard/users","/(Dashboard)/dashboard/settings/page":"/dashboard/settings","/(Dashboard)/dashboard/wallets/page":"/dashboard/wallets","/(Dashboard)/dashboard/withdrawals/page":"/dashboard/withdrawals","/(Dashboard)/dashboard/plans/page":"/dashboard/plans","/(Dashboard)/dashboard/votes/page":"/dashboard/votes","/(Dashboard)/dashboard/contributions/page":"/dashboard/contributions","/(Dashboard)/dashboard/subscriptions/page":"/dashboard/subscriptions","/(Dashboard)/dashboard/elections/page":"/dashboard/elections"}
+{
+  "/(Auth)/auth/forgot-password/page": "/auth/forgot-password",
+  "/(Auth)/auth/login/page": "/auth/login",
+  "/(Auth)/auth/signup/page": "/auth/signup",
+  "/(Auth)/auth/verify-token/page": "/auth/verify-token",
+  "/(Dashboard)/dashboard/contributions/page": "/dashboard/contributions",
+  "/(Dashboard)/dashboard/elections/help/page": "/dashboard/elections/help",
+  "/(Dashboard)/dashboard/elections/page": "/dashboard/elections",
+  "/(Dashboard)/dashboard/page": "/dashboard",
+  "/(Dashboard)/dashboard/payments/page": "/dashboard/payments",
+  "/(Dashboard)/dashboard/plans/page": "/dashboard/plans",
+  "/(Dashboard)/dashboard/settings/page": "/dashboard/settings",
+  "/(Dashboard)/dashboard/subscriptions/page": "/dashboard/subscriptions",
+  "/(Dashboard)/dashboard/tenants/page": "/dashboard/tenants",
+  "/(Dashboard)/dashboard/users/page": "/dashboard/users",
+  "/(Dashboard)/dashboard/votes/page": "/dashboard/votes",
+  "/(Dashboard)/dashboard/wallets/page": "/dashboard/wallets",
+  "/(Dashboard)/dashboard/withdrawals/page": "/dashboard/withdrawals",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found"
+}
