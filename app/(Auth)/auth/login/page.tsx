@@ -38,7 +38,7 @@ export default function LoginPage() {
       if (response.ok && json.status) {
         const authData = json.data;
         const maxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7;
-        setCookie("auth-token", authData.token, { maxAge });
+        setCookie("auth-token", authData.token, maxAge);
         setAuth(authData);
         router.push("/dashboard");
       } else {
