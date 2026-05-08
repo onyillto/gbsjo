@@ -4,8 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { setCookie } from "cookies-next";
 import { useAuthStore } from "@/store/authStore";
+
+function setCookie(name: string, value: string, maxAge: number) {
+  document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/`
+}
 
 export default function LoginPage() {
   const router = useRouter();
