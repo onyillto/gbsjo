@@ -1,17 +1,5 @@
 {
   "headers": {
-    "x-nextjs-stale-time": "300",
-    "x-nextjs-prerender": "1",
     "x-next-cache-tags": "_N_T_/layout,_N_T_/(Dashboard)/layout,_N_T_/(Dashboard)/dashboard/layout,_N_T_/(Dashboard)/dashboard/subscriptions/layout,_N_T_/(Dashboard)/dashboard/subscriptions/page,_N_T_/dashboard/subscriptions"
-  },
-  "segmentPaths": [
-    "/_tree",
-    "/_full",
-    "/!KERhc2hib2FyZCk/dashboard/subscriptions/__PAGE__",
-    "/!KERhc2hib2FyZCk/dashboard/subscriptions",
-    "/!KERhc2hib2FyZCk/dashboard",
-    "/!KERhc2hib2FyZCk",
-    "/_index",
-    "/_head"
-  ]
+  }
 }

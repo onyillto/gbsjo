@@ -3,32 +3,30 @@
   "middleware": {
     "/": {
       "files": [
-        "server/edge/chunks/node_modules_next_dist_esm_build_templates_edge-wrapper_0a9gg_0.js",
-        "server/edge/chunks/[root-of-the-server]__0_lzsr-._.js",
-        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_09_s2fq.js"
+        "server/edge-runtime-webpack.js",
+        "server/middleware.js"
       ],
       "name": "middleware",
       "page": "/",
-      "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_09_s2fq.js",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|logo.png|theme.jpg|gbajo.jpg|gbajjo.jpg).*))(\\\\.json)?[\\/#\\?]?$",
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|logo.png|theme.jpg|gbajo.jpg|gbajjo.jpg).*))(.json)?[\\/#\\?]?$",
           "originalSource": "/((?!_next/static|_next/image|favicon.ico|logo.png|theme.jpg|gbajo.jpg|gbajjo.jpg).*)"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "173gStWNacHEr3NrNZgNg",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "SIcIrARjE3J4KEYw+STB5fAXYeTolBuMjBzhwLqNxTE=",
-        "__NEXT_PREVIEW_MODE_ID": "4ade5f39359a24dc113950e6b0734a27",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "8db559734f98e60243a49a315c0513acd6c320df48347d8c632d64c1b546badf",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "259d0ca710452497e93cd02ea57bf8abb681c59317f88309f67499195899f48d"
+        "__NEXT_BUILD_ID": "ClnAjkP8U5TfgU0XqTPZR",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "H/mOC5Vx+7b3nUkFcqPB6qHsQ/1/8KJVUfm3W6OW2UU=",
+        "__NEXT_PREVIEW_MODE_ID": "71aab9008e1a6866824c2f321da2382a",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "b2721f8e64b90bbdbecd75fc3863f758be6b52588e67fc331bbd197bea1a7242",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "de31be7e639756aa753e09e9aeb623cfd91ce083de834a77eb1388807f975075"
       }
     }
   },
+  "functions": {},
   "sortedMiddleware": [
     "/"
-  ],
-  "functions": {}
+  ]
 }
